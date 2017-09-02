@@ -100,7 +100,9 @@ function yahoo_profile(key, secret, code, url, callback) {
 }
 
 function github_redirect(key, url) {
-    return 'https://github.com/login/oauth/authorize?scope=user%3Aemail&redirect_uri={0}&response_type=code&client_id={1}'.format(encodeURIComponent(url), key);
+    var redirect =  'https://github.com/login/oauth/authorize?scope=user%3Aemail&redirect_uri={0}&response_type=code&client_id={1}'.format(encodeURIComponent(url), key);
+    console.log('github_redirect::'+redirect);
+    return redirect;
 }
 
 function github_profile(key, secret, code, url, callback) {

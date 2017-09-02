@@ -32,7 +32,10 @@ function oauth_login_callback() {
     self.host('/login/' + type + '/callback/');
     MODULE('oauth2').callback(type, CONFIG('oauth2.' + type + '.key'), CONFIG('oauth2.' + type + '.secret'), url, self, function (err, profile, access_token) {
         console.log(profile);
-
+        if(!profile){
+            self.json(SUCCESS(false));
+            return;
+        }
         var email = profile.email;
         var name = profile.name;
         var nosql = NOSQL('users');
@@ -42,15 +45,15 @@ function oauth_login_callback() {
             builder.callback(function (err, response) {
                 var id;
                 if (!response) {
-                    var profiles = [];
-                    profiles['github'] = profile;
+                    var profiles = EMPTYOBJECT;
+                    profiles.github = profile;
                     id = UID();
-                    nosql.insert({id: id, email: email, name: name}).callback(NOOP);
+                    nosql.insert({id: id, email: email, name: name, profiles:profiles}).callback(NOOP);
                 } else {
                     id = response.id;
                 }
-                self.cookie(F.config.cookie, F.encrypt({ id: id, ip: controller.ip }, 'user'), '5 minutes');
-                callback(SUCCESS(true));
+                self.cookie(F.config.cookie, F.encrypt({ id: id, ip: self.ip }, 'user'), '5 minutes');
+                self.json(SUCCESS(true));
             });
         });
     });
