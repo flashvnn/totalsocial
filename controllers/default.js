@@ -49,7 +49,7 @@ function oauth_login_callback() {
                 } else {
                     id = response.id;
                 }
-                controller.cookie(F.config.cookie, F.encrypt({ id: id, ip: controller.ip }, 'user'), '5 minutes');
+                self.cookie(F.config.cookie, F.encrypt({ id: id, ip: controller.ip }, 'user'), '5 minutes');
                 callback(SUCCESS(true));
             });
         });
