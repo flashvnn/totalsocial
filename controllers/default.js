@@ -1,8 +1,18 @@
 exports.install = function () {
     F.route('/', view_index);
+    F.route('/status', view_status);
     F.route('/login/github/', oauth_login, ['unauthorize']);
     F.route('/login/github/callback/', oauth_login_callback, ['unauthorize']);
 };
+
+function view_status() {
+    var self = this;
+    if (self.user) {
+        self.plain('You are logged as {0}. To unlogged remove cookie __user or click http://{1}:{2}/logout/'.format(self.user.email, F.ip, F.port));
+    } else {
+        self.plain('ANONYMOUS');
+    }
+}
 
 function view_index() {
     var self = this;
@@ -32,7 +42,7 @@ function oauth_login_callback() {
     self.host('/login/' + type + '/callback/');
     MODULE('oauth2').callback(type, CONFIG('oauth2.' + type + '.key'), CONFIG('oauth2.' + type + '.secret'), url, self, function (err, profile, access_token) {
         console.log(profile);
-        if(!profile){
+        if (!profile) {
             self.json(SUCCESS(false));
             return;
         }
@@ -48,11 +58,11 @@ function oauth_login_callback() {
                     var profiles = EMPTYOBJECT;
                     profiles.github = profile;
                     id = UID();
-                    nosql.insert({id: id, email: email, name: name, profiles:profiles}).callback(NOOP);
+                    nosql.insert({id: id, email: email, name: name, profiles: profiles}).callback(NOOP);
                 } else {
                     id = response.id;
                 }
-                self.cookie(F.config.cookie, F.encrypt({ id: id, ip: self.ip }, 'user'), '5 minutes');
+                self.cookie(F.config.cookie, F.encrypt({id: id, ip: self.ip}, 'user'), '5 minutes');
                 self.json(SUCCESS(true));
             });
         });
