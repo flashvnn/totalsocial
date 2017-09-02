@@ -1,0 +1,28 @@
+{
+  "name": "totalsocial",
+  "version": "1.0.0",
+  "description": "Social Login with Total.js",
+  "main": "debug.js",
+  "dependencies": {
+    "total.js": "^2.6.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flashvnn/totalsocial.git"
+  },
+  "keywords": [
+    "social",
+    "login",
+    "total.js"
+  ],
+  "author": "Thao Huynh (flashvnn@gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/flashvnn/totalsocial/issues"
+  },
+  "homepage": "https://github.com/flashvnn/totalsocial#readme"
+}
